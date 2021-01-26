@@ -25,13 +25,18 @@
                                 @foreach ($data as $db)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>Nama</td>
-                                    <td>Description</td>
-                                    <td>Active</td>
+                                    <td>{{$db->nama}}</td>
+                                    <td>{{substr($db->description,0,150)}}</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox" name="active" id="active" value=1 {{$db->active==1?'checked':''}} onchange="active({{$db->id}})">
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
                                     <td>
                                         <ul class="d-flex justify-content-center">
-                                            <li class="mr-3"><a href="#" class="text-success"><i class="fa fa-edit"></i></a></li>
-                                            <li><a href="#" class="text-danger"><i class="ti-trash"></i></a></li>
+                                            <li class="mr-3"><a href="#" class="text-success"><i class="fa fa-edit" title="Edit"></i></a></li>
+                                            <li><a href="#" class="text-danger" title="Delete"><i class="ti-trash"></i></a></li>
                                         </ul>
                                     </td>
                                 </tr>
@@ -47,3 +52,24 @@
 </div>
 
 @endsection('content')
+
+@push('after-script')
+    <script>
+        function active(promo_id){
+            var active = $(this).val();
+            alert(active);
+            // $.ajax({
+            //     url : `{{route('promo.updateActive')}}`,
+            //     type : "POST",
+            //     dataType : "json",
+            //     data    : {_token:"{{csrf_token()}}", id:promo_id, active:active},
+            //     success : function(data) {
+            //         if(active == 1){
+            //             success('Berhasil diaktifkan');
+            //         }
+            //         info('Berhasil dinonaktifkan');
+            //     }
+            // });
+        }
+    </script>
+@endpush

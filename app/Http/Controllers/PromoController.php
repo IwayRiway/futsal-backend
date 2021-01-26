@@ -46,18 +46,18 @@ class PromoController extends Controller
         $validate = $request->validate([
             'nama' => ['required', 'max:100'],
             'description' => ['required'],
-            'photo' => 'required|file|image|mimes:jpeg,png,jpg',
+            'file' => 'required|file|image|mimes:jpeg,png,jpg',
         ]);
         
         $file = $request->file('file');
         $nama_file = time()."_".$file->getClientOriginalName();
-        $tujuan_upload = 'image';
+        $tujuan_upload = 'image/promo';
         $file->move($tujuan_upload,$nama_file);
         
         $data = [
             'nama' => $request->nama,
             'description' => $request->description,
-            'active' => $request->active,
+            'active' => $request->active??0,
             'photo' => $tujuan_upload .'/'. $nama_file
         ];
         Promo::create($data);
@@ -96,6 +96,16 @@ class PromoController extends Controller
     public function update(Request $request, $id)
     {
         //
+    }
+
+    public function updateActive(Request $request)
+    {
+        $data = [
+            'active' => $request->active
+        ];
+
+        Promo::first($request->id)->update($data);
+        json_encode('200');
     }
 
     /**

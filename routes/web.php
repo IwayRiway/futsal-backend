@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::resource('promo', 'PromoController');
+Route::post('promo/updateActive', 'PromoController@updateActive')->name('promo.updateActive');
