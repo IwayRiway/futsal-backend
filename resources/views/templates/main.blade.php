@@ -32,6 +32,7 @@
          <div class="sukses" data-flashdata="{{session('sukses')}}"></div>
          <div class="warning" data-flashdata="{{session('warning')}}"></div>
 
+         @include('includes/judul')
          @yield('content')
         </div>
         <!-- main content area end -->
