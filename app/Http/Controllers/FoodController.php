@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Promo;
+use App\Models\Food;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
-class PromoController extends Controller
+class FoodController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +16,11 @@ class PromoController extends Controller
      */
     public function index()
     {
-        $judul = 'Promo';
+        $judul = 'Food & Beverages';
         $subjudul = false;
-        $data = Promo::all();
+        $data = Food::all();
 
-        return view('promo/index', compact('judul', 'subjudul', 'data'));
+        return view('food/index', compact('judul', 'subjudul', 'data'));
     }
 
     /**
@@ -30,10 +30,10 @@ class PromoController extends Controller
      */
     public function create()
     {
-        $judul = 'Promo';
+        $judul = 'Food & Beverages';
         $subjudul = 'Create';
 
-        return view('promo/create', compact('judul', 'subjudul'));
+        return view('food/create', compact('judul', 'subjudul'));
     }
 
     /**
@@ -45,24 +45,27 @@ class PromoController extends Controller
     public function store(Request $request)
     {
         $validate = $request->validate([
-            'nama' => ['required', 'max:100'],
-            'description' => ['required'],
+            'name' => ['required', 'max:100'],
+            'price' => ['required'],
+            'type' => ['required'],
             'file' => 'required|file|image|mimes:jpeg,png,jpg',
         ]);
         
         $file = $request->file('file');
         $nama_file = time()."_".$file->getClientOriginalName();
-        $tujuan_upload = 'image/promo';
+        $tujuan_upload = 'image/foods';
         $file->move($tujuan_upload,$nama_file);
         
         $data = [
-            'nama' => $request->nama,
+            'name' => $request->name,
+            'price' => $request->price,
+            'type' => $request->type,
             'description' => $request->description,
-            'active' => $request->active??0,
             'photo' => $tujuan_upload .'/'. $nama_file
         ];
-        Promo::create($data);
-        return redirect()->route('promo.index')->with('sukses', 'Data Promo Berhasil Ditambahkan');
+        // dd($data);
+        Food::create($data);
+        return redirect()->route('food.index')->with('sukses', 'Data Makanan Berhasil Ditambahkan');
     }
 
     /**
@@ -84,11 +87,11 @@ class PromoController extends Controller
      */
     public function edit($id)
     {
-        $judul = 'Promo';
+        $judul = 'Food';
         $subjudul = 'Edit';
-        $data = Promo::findOrFail($id);
+        $data = Food::findOrFail($id);
 
-        return view('promo/edit', compact('judul', 'subjudul', 'data'));
+        return view('food/edit', compact('judul', 'subjudul', 'data'));
     }
 
     /**
@@ -101,39 +104,31 @@ class PromoController extends Controller
     public function update(Request $request, $id)
     {
         $validate = $request->validate([
-            'nama' => ['required', 'max:100'],
-            'description' => ['required'],
+            'name' => ['required', 'max:100'],
+            'price' => ['required'],
+            'type' => ['required'],
         ]);
         
         $data = [
-            'nama' => $request->nama,
+            'name' => $request->name,
+            'price' => $request->price,
+            'type' => $request->type,
             'description' => $request->description,
-            'active' => $request->active??0,
         ];
-        $promo = Promo::findOrFail($id);
+        $food = Food::findOrFail($id);
         
         $file = $request->file('file');
         if($file){
             $nama_file = time()."_".$file->getClientOriginalName();
-            $tujuan_upload = 'image/promo';
+            $tujuan_upload = 'image/food';
             $file->move($tujuan_upload,$nama_file);
 
             $data['photo'] = $tujuan_upload .'/'. $nama_file;
-            File::delete($promo->photo);
+            File::delete($food->photo);
         }
         
-        $promo->update($data);
-        return redirect()->route('promo.index')->with('info', 'Data Promo Berhasil Diubah');
-    }
-
-    public function updateActive(Request $request)
-    {
-        $data = [
-            'active' => $request->active
-        ];
-
-        Promo::where('id',$request->id)->update($data);
-        return json_encode('200');
+        $food->update($data);
+        return redirect()->route('food.index')->with('info', 'Data Makanan Berhasil Diubah');
     }
 
     /**
@@ -144,9 +139,9 @@ class PromoController extends Controller
      */
     public function destroy($id)
     {
-        $promo = Promo::findOrFail($id);
-        File::delete($promo->photo);
-        $promo->delete();
-        return redirect()->route('promo.index')->with('warning', 'Data Promo Berhasil Dihapus');
+        $food = Food::findOrFail($id);
+        File::delete($food->photo);
+        $food->delete();
+        return redirect()->route('food.index')->with('warning', 'Data Makanan Berhasil Dihapus');
     }
 }

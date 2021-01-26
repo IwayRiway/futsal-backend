@@ -16,7 +16,7 @@
        <div class="col-sm-6 clearfix">
            <div class="user-profile pull-right">
                <img class="avatar user-thumb" src="{{asset('assets/images/author/avatar.png')}}" alt="avatar">
-               <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Kumkum Rai</h4>
+               <h4 class="user-name dropdown-toggle" data-toggle="dropdown">Riway Restu Islami Yudha</h4>
            </div>
        </div>
    </div>

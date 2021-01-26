@@ -18,7 +18,9 @@
                            <li><a href="#">Menuitem 3</a></li>
                        </ul>
                    </li> --}}
-                   <li><a href="#"><i class="ti-map-alt"></i><span>Not expanding</span></a></li>
+                   <li><a href="{{route('promo.index')}}"><i class="ti-map-alt"></i><span>Promo</span></a></li>
+                   <li><a href="{{route('food.index')}}"><i class="ti-map-alt"></i><span>Food & Beverages</span></a></li>
+                   <li><a href="{{route('hour.index')}}"><i class="ti-map-alt"></i><span>Hour Booking</span></a></li>
                    {{-- <li>
                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i>
                            <span>Multi
