@@ -17,3 +17,19 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('login', 'API\AuthController@login');
+Route::post('register', 'API\AuthController@register');
+Route::post('update', 'API\AuthController@update');
+
+Route::get('promo', 'API\PromoController@promo');
+Route::get('promo/detail', 'API\PromoController@detail');
+
+Route::get('field', 'API\FieldController@field');
+
+Route::get('food', 'API\FoodController@food');
+
+Route::get('help', 'API\HelpController@food');
+
+Route::get('transaction', 'API\TransactionController@transaction');
+Route::get('history', 'API\TransactionController@history');

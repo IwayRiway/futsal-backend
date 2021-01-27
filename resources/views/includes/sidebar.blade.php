@@ -19,8 +19,10 @@
                        </ul>
                    </li> --}}
                    <li><a href="{{route('promo.index')}}"><i class="ti-map-alt"></i><span>Promo</span></a></li>
+                   <li><a href="{{route('field.index')}}"><i class="ti-map-alt"></i><span>Field</span></a></li>
                    <li><a href="{{route('food.index')}}"><i class="ti-map-alt"></i><span>Food & Beverages</span></a></li>
                    <li><a href="{{route('hour.index')}}"><i class="ti-map-alt"></i><span>Hour Booking</span></a></li>
+                   <li><a href="{{route('help.index')}}"><i class="ti-map-alt"></i><span>FAQ</span></a></li>
                    {{-- <li>
                        <a href="javascript:void(0)" aria-expanded="true"><i class="fa fa-align-left"></i>
                            <span>Multi

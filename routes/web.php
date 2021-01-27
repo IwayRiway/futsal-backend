@@ -29,3 +29,6 @@ Route::get('food/{id}/destroy', 'FoodController@destroy')->name('food.destroy');
 
 Route::resource('hour', 'HourController');
 Route::get('hour/{id}/destroy', 'HourController@destroy')->name('hour.destroy');
+
+Route::resource('help', 'HelpController');
+Route::get('help/{id}/destroy', 'HelpController@destroy')->name('help.destroy');
