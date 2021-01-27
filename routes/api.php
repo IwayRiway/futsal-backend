@@ -28,8 +28,10 @@ Route::get('promo/detail', 'API\PromoController@detail');
 Route::get('field', 'API\FieldController@field');
 
 Route::get('food', 'API\FoodController@food');
+Route::get('food/detail', 'API\FoodController@detail');
 
-Route::get('help', 'API\HelpController@food');
+Route::get('help', 'API\HelpController@help');
 
-Route::get('transaction', 'API\TransactionController@transaction');
+Route::post('transaction', 'API\TransactionController@transaction');
 Route::get('history', 'API\TransactionController@history');
+Route::get('schedule', 'API\TransactionController@schedule');

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Help;
 
 class HelpController extends Controller
 {
@@ -13,7 +14,11 @@ class HelpController extends Controller
      */
     public function index()
     {
-        //
+        $judul = 'Frequent Answer Question';
+        $subjudul = false;
+        $data = Help::all();
+
+        return view('help/index', compact('judul', 'subjudul', 'data'));
     }
 
     /**
@@ -23,7 +28,10 @@ class HelpController extends Controller
      */
     public function create()
     {
-        //
+        $judul = 'Frequent Answer Question';
+        $subjudul = 'Create';
+
+        return view('help/create', compact('judul', 'subjudul'));
     }
 
     /**
@@ -34,7 +42,17 @@ class HelpController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'name' => ['required', 'max:100'],
+            'description' => ['required'],
+        ]);
+        
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+        ];
+        Help::create($data);
+        return redirect()->route('help.index')->with('sukses', 'Data FAQ Berhasil Ditambahkan');
     }
 
     /**
@@ -56,7 +74,11 @@ class HelpController extends Controller
      */
     public function edit($id)
     {
-        //
+        $judul = 'Frequent Answer Question';
+        $subjudul = 'Edit';
+        $data = Help::findOrFail($id);
+
+        return view('help/edit', compact('judul', 'subjudul', 'data'));
     }
 
     /**
@@ -68,7 +90,18 @@ class HelpController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = $request->validate([
+            'name' => ['required', 'max:100'],
+            'description' => ['required'],
+        ]);
+        
+        $data = [
+            'name' => $request->name,
+            'description' => $request->description,
+        ];
+        Help::findOrFail($id)->update($data);
+
+        return redirect()->route('help.index')->with('info', 'Data FAQ Berhasil Diubah');
     }
 
     /**
@@ -79,6 +112,7 @@ class HelpController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Help::findOrFail($id)->delete();
+        return redirect()->route('help.index')->with('warning', 'Data FAQ Berhasil Dihapus');
     }
 }

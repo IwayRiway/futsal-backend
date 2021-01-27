@@ -16,4 +16,13 @@ class FoodController extends Controller
 
         return $data;
     }
+
+    public function detail(Request $request)
+    {
+        $data['code'] = 200;
+        $data['status'] = 'Berhasil';
+        $data['result'] = Food::findOrFail($request->id);
+
+        return $data;
+    }
 }

@@ -11,7 +11,7 @@ class Transaction extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['type', 'price', 'ticket_id', 'qr_code', 'ticket_date'];
+    protected $fillable = ['type', 'price', 'ticket_id', 'qr_code', 'ticket_date', 'user_id'];
     protected $guarded = [];
 
     public function transaction_details()

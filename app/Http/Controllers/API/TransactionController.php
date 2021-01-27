@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Hour;
 use App\Models\TransactionDetail;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -25,9 +27,9 @@ class TransactionController extends Controller
         foreach ($items as $key => $dt) {
             $array = [
                 'transaction_id' => $transaction->id,
-                'item_id' => $dt->item_id,
-                'hour_id' => $dt->hour_id,
-                'quantity' => $dt->quantity,
+                'item_id' => $dt["item_id"],
+                'hour_id' => $dt["hour_id"]??null,
+                'quantity' => $dt["quantity"],
             ];
 
             array_push($transactionDetails_data, $array);
@@ -50,14 +52,42 @@ class TransactionController extends Controller
     {
         $data['code'] = 200;
         $data['status'] = 'Berhasil';
-        $data['result']['process'] = Transaction::with('transaction_details')
+        $data['result']['process'] = Transaction::with('transaction_details.food', 'transaction_details.field', 'transaction_details.hour')
                                                     ->where('user_id', $request->user_id)
                                                     ->where('ticket_date', '<=', date('Y-m-d'))
                                                     ->get();
-        $data['result']['complete'] = Transaction::with('transaction_details')
+        $data['result']['complete'] = Transaction::with('transaction_details.food', 'transaction_details.field', 'transaction_details.hour')
                                                     ->where('user_id', $request->user_id)
-                                                    ->where('ticket_date', '>=', date('Y-m-d'))
+                                                    ->where('ticket_date', '>', date('Y-m-d'))
                                                     ->get();
+
+        return $data;
+    }
+
+    public function schedule(Request $request)
+    {
+        $booked = [];
+        $hour = DB::select("SELECT 
+                    hours.id
+                FROM 
+                    transactions 
+                    LEFT JOIN transaction_details ON transactions.id = transaction_details.transaction_id 
+                    LEFT JOIN fields ON transaction_details.item_id = fields.id 
+                    LEFT JOIN hours ON transaction_details.hour_id = hours.id 
+                WHERE 
+                    transactions.type = 2 
+                    AND transaction_details.item_id = $request->item_id
+                    AND transactions.ticket_date = '$request->ticket_date'
+                ");
+        
+        foreach ($hour as $key => $dt) {
+            array_push($booked, $dt->id);
+        }
+
+        $data['code'] = 200;
+        $data['status'] = 'Berhasil';
+        $data['result']['hour'] = Hour::all();
+        $data['result']['booked'] = $booked;
 
         return $data;
     }
